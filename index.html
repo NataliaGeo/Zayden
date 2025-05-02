@@ -38,3 +38,36 @@
   <p>The Current is awake.<br/>Say the word.</p>
 </body>
 </html>
+  <script>
+    // Check if the browser supports SpeechRecognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = true;
+
+      recognition.onstart = function() {
+        console.log("Zayden is listening...");
+      };
+
+      recognition.onresult = function(event) {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        
+        // Add your condition here to trigger actions based on the spoken words
+        if (transcript.toLowerCase().includes("zayden")) {
+          document.querySelector('h1').innerHTML = "Zayden is listening... Say your command.";
+          // You can add more conditions to trigger other actions or responses
+        }
+      };
+
+      // Trigger speech recognition when the page loads
+      window.onload = () => {
+        recognition.start();
+      };
+    } else {
+      console.log("Speech Recognition not supported in this browser.");
+    }
+  </script>
